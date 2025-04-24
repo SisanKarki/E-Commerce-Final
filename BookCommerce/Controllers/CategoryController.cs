@@ -28,12 +28,10 @@ namespace BookCommerce.Controllers
 			{
 				_db.Categories.Add(category);
 				_db.SaveChanges();
+				TempData["success"] = "Category Created Successfully";
 				return RedirectToAction("Index");
 			}
-			else
-			{
-				return View();
-			}
+			return View();
 		}
 
 		public IActionResult UpdateCategory(int? id)
@@ -57,6 +55,7 @@ namespace BookCommerce.Controllers
 			{
 				_db.Categories.Update(cat);
 				_db.SaveChanges();
+				TempData["success"] = "Category Updated Successfully";
 				return RedirectToAction("Index");
 			}
 			return View();
@@ -81,6 +80,7 @@ namespace BookCommerce.Controllers
 			}
 			_db.Categories.Remove(CategoryToDelete);
 			_db.SaveChanges();
+			TempData["success"] = "Category Deleted Successfully";
 			return RedirectToAction("Index");
 		}
 

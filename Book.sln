@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookCommerce", "BookCommerce\BookCommerce.csproj", "{8CE38888-0CDA-468B-BAFF-55C384F9191C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookCommerce", "BookCommerce\BookCommerce.csproj", "{8CE38888-0CDA-468B-BAFF-55C384F9191C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookRazor", "BookRazor\BookRazor.csproj", "{CF855154-D6F1-40AA-B091-2F2946521692}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8CE38888-0CDA-468B-BAFF-55C384F9191C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CE38888-0CDA-468B-BAFF-55C384F9191C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CE38888-0CDA-468B-BAFF-55C384F9191C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF855154-D6F1-40AA-B091-2F2946521692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF855154-D6F1-40AA-B091-2F2946521692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF855154-D6F1-40AA-B091-2F2946521692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF855154-D6F1-40AA-B091-2F2946521692}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
