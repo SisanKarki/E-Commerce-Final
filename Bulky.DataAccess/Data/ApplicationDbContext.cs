@@ -1,9 +1,10 @@
-﻿using BookCommerce.Models;
+﻿
+using Book.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookCommerce.Data
+namespace Book.DataAccess.Data
 {
-	public class ApplicationDbContext:DbContext
+    public class ApplicationDbContext:DbContext
 	{
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
         {
