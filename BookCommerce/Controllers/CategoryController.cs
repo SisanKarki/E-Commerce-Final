@@ -1,4 +1,5 @@
 ﻿using Book.DataAccess.Data;
+using Book.DataAccess.Repository.IRepository;
 using Book.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,14 +7,15 @@ namespace BookCommerce.Controllers
 {
 	public class CategoryController : Controller
 	{
-		private readonly ApplicationDbContext _db;
-		public CategoryController(ApplicationDbContext db)
+		private readonly ICategoryRepository _categoryRepo;
+	
+		public CategoryController(ICategoryRepository db)
 		{
-			_db = db;
+			_categoryRepo = db;
 		}
 		public IActionResult Index()
 		{
-			List<Category> CatList = _db.Categories.ToList();
+			List<Category> CatList = _categoryRepo.GetAll().ToList();
 			return View(CatList);
 		}
 
@@ -26,8 +28,8 @@ namespace BookCommerce.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_db.Categories.Add(category);
-				_db.SaveChanges();
+				_categoryRepo.Add(category);
+				_categoryRepo.Save();
 				TempData["success"] = "Category Created Successfully";
 				return RedirectToAction("Index");
 			}
@@ -40,7 +42,7 @@ namespace BookCommerce.Controllers
 			{
 				return NotFound();
 			}
-			var CategoryToDisplay = _db.Categories.Find(id);
+			var CategoryToDisplay = _categoryRepo.Get(u=>u.Id == id);
 			if (CategoryToDisplay == null)
 			{
 				return NotFound();
@@ -53,8 +55,8 @@ namespace BookCommerce.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_db.Categories.Update(cat);
-				_db.SaveChanges();
+				_categoryRepo.Update(cat);
+				_categoryRepo.Save();
 				TempData["success"] = "Category Updated Successfully";
 				return RedirectToAction("Index");
 			}
@@ -63,7 +65,7 @@ namespace BookCommerce.Controllers
 
 		public IActionResult DeleteCategory(int? id)
 		{
-			Category category = _db.Categories.Find(id);
+			Category category = _categoryRepo.Get(u=>u.Id == id);
 			if(category == null)
 			{
 				return NotFound();
@@ -73,13 +75,13 @@ namespace BookCommerce.Controllers
 		[HttpPost,ActionName("DeleteCategory")]
 		public IActionResult DeleteCategoryPOST(int? id)
 		{
-			Category? CategoryToDelete = _db.Categories.Find(id);
+			Category? CategoryToDelete = _categoryRepo.Get(u=>u.Id==id);
 			if (CategoryToDelete == null)
 			{
 				return NotFound();
 			}
-			_db.Categories.Remove(CategoryToDelete);
-			_db.SaveChanges();
+			_categoryRepo.Remove(CategoryToDelete);
+			_categoryRepo.Save();
 			TempData["success"] = "Category Deleted Successfully";
 			return RedirectToAction("Index");
 		}
