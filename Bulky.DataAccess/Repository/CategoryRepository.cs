@@ -8,7 +8,7 @@ using Book.DataAccess.Data;
 using Book.DataAccess.Repository.IRepository;
 using Book.Models;
 
-namespace Book.DataAccess.Repository.IRepository
+namespace Book.DataAccess.Repository
 {
     public class CategoryRepository :Repository<Category>, ICategoryRepository
     {
