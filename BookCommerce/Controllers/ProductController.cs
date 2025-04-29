@@ -54,5 +54,24 @@ namespace BookCommerce.Controllers
             }
             return View();
         }
+
+        public IActionResult RemoveProduct(int? id)
+        {
+            var ProductToDelete = _unitOfWork.Product.Get(u=>u.Id == id);
+            return View(ProductToDelete);
+        }
+        [HttpPost,ActionName("RemoveProduct")]
+        public IActionResult RemoveProductPOST(int? id)
+        {
+            var ProductToDelete = _unitOfWork.Product.Get(u=> u.Id == id);
+            if(ProductToDelete == null)
+            {
+                return NotFound();
+            }
+            _unitOfWork.Product.Remove(ProductToDelete);
+            _unitOfWork.Save();
+            TempData["success"] = "Product Deleted Successfully";
+            return RedirectToAction("Index");
+        }
     }
 }
