@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Book.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250428172916_createProductModel")]
-    partial class createProductModel
+    [Migration("20250430160246_initialmigaration")]
+    partial class initialmigaration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,6 +76,13 @@ namespace Book.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ISBN")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -98,6 +105,8 @@ namespace Book.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Product");
 
                     b.HasData(
@@ -105,6 +114,8 @@ namespace Book.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "Hiroshi Sakurazaka",
+                            CategoryId = 1,
+                            Description = "Very Nice Book",
                             ISBN = "978-0-123456-47-2",
                             ListPrice = 29.989999999999998,
                             Price = 27.989999999999998,
@@ -116,6 +127,8 @@ namespace Book.DataAccess.Migrations
                         {
                             Id = 2,
                             Author = "Kip Thorne",
+                            CategoryId = 2,
+                            Description = "Very Nice Book",
                             ISBN = "978-0-987654-32-1",
                             ListPrice = 35.5,
                             Price = 32.5,
@@ -127,6 +140,8 @@ namespace Book.DataAccess.Migrations
                         {
                             Id = 3,
                             Author = "James Clear",
+                            CategoryId = 3,
+                            Description = "Very Nice Book",
                             ISBN = "978-0-123456-01-3",
                             ListPrice = 25.0,
                             Price = 23.0,
@@ -138,6 +153,8 @@ namespace Book.DataAccess.Migrations
                         {
                             Id = 4,
                             Author = "Robin Sharma",
+                            CategoryId = 1,
+                            Description = "Very Nice Book",
                             ISBN = "978-0-123456-02-4",
                             ListPrice = 22.989999999999998,
                             Price = 20.989999999999998,
@@ -149,6 +166,8 @@ namespace Book.DataAccess.Migrations
                         {
                             Id = 5,
                             Author = "Ernest Cline",
+                            CategoryId = 2,
+                            Description = "Very Nice Book",
                             ISBN = "978-0-123456-03-5",
                             ListPrice = 28.0,
                             Price = 26.0,
@@ -160,6 +179,8 @@ namespace Book.DataAccess.Migrations
                         {
                             Id = 6,
                             Author = "Andy Weir",
+                            CategoryId = 1,
+                            Description = "Very Nice Book",
                             ISBN = "978-0-123456-04-6",
                             ListPrice = 30.0,
                             Price = 28.0,
@@ -167,6 +188,17 @@ namespace Book.DataAccess.Migrations
                             Price50 = 26.0,
                             Title = "The Martian"
                         });
+                });
+
+            modelBuilder.Entity("Book.Models.Product", b =>
+                {
+                    b.HasOne("Book.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }
