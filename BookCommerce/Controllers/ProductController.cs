@@ -1,6 +1,9 @@
-﻿using Book.DataAccess.Repository.IRepository;
+﻿using System.Collections.Generic;
+using Book.DataAccess.Repository.IRepository;
 using Book.Models;
+using Book.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookCommerce.Controllers
 {
@@ -14,10 +17,24 @@ namespace BookCommerce.Controllers
         public IActionResult Index()
         {
             List<Product> product = _unitOfWork.Product.GetAll().ToList();
+
             return View(product);
         }
 
-        public IActionResult AddProduct() { return View(); }
+        public IActionResult AddProduct() {
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            }
+            );
+            ViewBag.CategoryList = CategoryList;
+            ProductVM productVM = new ProductVM()
+            {
+                CategoryList = CategoryList,
+                Product = new Product()
+            };
+            return View(productVM); }
 
         [HttpPost]
         public IActionResult AddProduct(Product obj)

@@ -34,6 +34,7 @@ namespace Book.DataAccess.Data
                     Price50 = 25.99,
                     Price100 = 23.99,
                     CategoryId = 1,
+                    ImageUrl=""
                 },
                 new Product
                 {
@@ -47,6 +48,7 @@ namespace Book.DataAccess.Data
                     Price50 = 30.00,
                     Price100 = 28.00,
                     CategoryId = 2,
+                    ImageUrl = ""
                 },
                 new Product
                 {
@@ -60,6 +62,7 @@ namespace Book.DataAccess.Data
                     Price50 = 21.00,
                     Price100 = 19.00,
                     CategoryId = 3,
+                    ImageUrl = ""
                 },
                 new Product
                 {
@@ -73,6 +76,7 @@ namespace Book.DataAccess.Data
                     Price50 = 18.99,
                     Price100 = 16.99,
                     CategoryId = 1,
+                    ImageUrl = ""
                 },
                 new Product
                 {
@@ -86,6 +90,7 @@ namespace Book.DataAccess.Data
                     Price50 = 24.00,
                     Price100 = 22.00,
                     CategoryId = 2,
+                    ImageUrl = ""
                 },
                 new Product
                 {
@@ -99,6 +104,7 @@ namespace Book.DataAccess.Data
                     Price50 = 26.00,
                     Price100 = 24.00,
                     CategoryId = 1,
+                    ImageUrl = ""
                 }
                 );
 
