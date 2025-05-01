@@ -10,9 +10,11 @@ namespace BookCommerce.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _env;
+        public ProductController(IUnitOfWork unitOfWork,IWebHostEnvironment env)
         {
             _unitOfWork = unitOfWork;
+            _env = env;
         }
         public IActionResult Index()
         {
@@ -21,56 +23,84 @@ namespace BookCommerce.Controllers
             return View(product);
         }
 
-        public IActionResult AddProduct() {
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+        public IActionResult Upsert(int? id) { //update+Insert
+            ProductVM productVM = new()
             {
-                Text = u.Name,
-                Value = u.Id.ToString()
-            }
-            );
-            ViewBag.CategoryList = CategoryList;
-            ProductVM productVM = new ProductVM()
-            {
-                CategoryList = CategoryList,
+                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
                 Product = new Product()
+
             };
-            return View(productVM); }
+            if (id == null || id == 0)
+            {
+                return View(productVM);
+            }
+            else
+            {
+                //update
+                productVM.Product = _unitOfWork.Product.Get(u=>u.Id== id);
+                return View(productVM);
+            }
+        }
 
         [HttpPost]
-        public IActionResult AddProduct(ProductVM obj)
+        public IActionResult Upsert(ProductVM obj,IFormFile? file)
         {
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _env.WebRootPath;
+                if(file!=null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images\product");
+                    using(var fileStream = new FileStream(Path.Combine(productPath,fileName),FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    obj.Product.ImageUrl = @"\image\product\" + fileName;
+                }
                 _unitOfWork.Product.Add(obj.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created Successfully";
                 return RedirectToAction("Index");
             }
-            return View();
+            else
+            {
+				obj.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+				{
+					Text = u.Name,
+					Value = u.Id.ToString()
+				});
+				return View(obj);
+			}
+            
         }
 
-        public IActionResult UpdateProduct(int? id)
-        {
-            if(id==null || id == 0)
-            {
-                return NotFound();
-            }
-            var cat = _unitOfWork.Product.Get(u => u.Id == id);
-            return View(cat);
-        }
+        //public IActionResult UpdateProduct(int? id)
+        //{
+        //    if(id==null || id == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var cat = _unitOfWork.Product.Get(u => u.Id == id);
+        //    return View(cat);
+        //}
 
-        [HttpPost]
-        public IActionResult UpdateProduct(Product obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Product.Update(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "Product Updated Successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
+        //[HttpPost]
+        //public IActionResult UpdateProduct(Product obj)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.Product.Update(obj);
+        //        _unitOfWork.Save();
+        //        TempData["success"] = "Product Updated Successfully";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View();
+        //}
 
         public IActionResult RemoveProduct(int? id)
         {
