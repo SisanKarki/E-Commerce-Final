@@ -56,13 +56,28 @@ namespace BookCommerce.Controllers
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string productPath = Path.Combine(wwwRootPath, @"images\product");
+                    if (!string.IsNullOrEmpty(obj.Product.ImageUrl))
+                    {
+                        //delete old image
+                        var oldImagePath = Path.Combine(wwwRootPath, obj.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath)){
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
                     using(var fileStream = new FileStream(Path.Combine(productPath,fileName),FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
-                    obj.Product.ImageUrl = @"\image\product\" + fileName;
+                    obj.Product.ImageUrl = @"\images\product\" + fileName;
                 }
-                _unitOfWork.Product.Add(obj.Product);
+                if (obj.Product.Id == 0) {
+                    _unitOfWork.Product.Add(obj.Product);
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(obj.Product);
+                }
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created Successfully";
                 return RedirectToAction("Index");
@@ -78,29 +93,6 @@ namespace BookCommerce.Controllers
 			}
             
         }
-
-        //public IActionResult UpdateProduct(int? id)
-        //{
-        //    if(id==null || id == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var cat = _unitOfWork.Product.Get(u => u.Id == id);
-        //    return View(cat);
-        //}
-
-        //[HttpPost]
-        //public IActionResult UpdateProduct(Product obj)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _unitOfWork.Product.Update(obj);
-        //        _unitOfWork.Save();
-        //        TempData["success"] = "Product Updated Successfully";
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View();
-        //}
 
         public IActionResult RemoveProduct(int? id)
         {

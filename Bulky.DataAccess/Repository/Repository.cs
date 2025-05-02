@@ -19,7 +19,7 @@ namespace Book.DataAccess.Repository
         {
             _db = db;
             this.dbSet = _db.Set<T>();
-            
+            _db.Product.Include(u => u.Category);
         }
         public void Add(T entity)
         {
