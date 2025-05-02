@@ -18,7 +18,7 @@ namespace BookCommerce.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> product = _unitOfWork.Product.GetAll().ToList();
+            List<Product> product = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
 
             return View(product);
         }
@@ -112,5 +112,16 @@ namespace BookCommerce.Controllers
             TempData["success"] = "Product Deleted Successfully";
             return RedirectToAction("Index");
         }
+
+        #region API CALLS
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<Product> product = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            return Json(new { data = product });
+
+        }
+
+        #endregion
     }
 }
