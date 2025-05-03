@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿var dataTable;
+
+$(document).ready(function () {
     loadDataTable();
 });
 
@@ -27,7 +29,7 @@ function loadDataTable() {
     });
 }
 
-function delete (url){
+function Delete (url){
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -40,7 +42,7 @@ function delete (url){
         if (result.isConfirmed) {
             $.ajax({
                 url: url,
-                type='DELETE',
+                type:'DELETE',
                 success: function (data) {
                     datatable.ajax.reload();
                     toastr.success(data.message);

@@ -125,14 +125,17 @@ namespace BookCommerce.Controllers
         public IActionResult Delete(int? id)
         {
             var ProductToBeDeleted = _unitOfWork.Product.Get(u=>id == u.Id);
-            if(id== null)
+            if(id== null || ProductToBeDeleted == null)
             {
                 return Json(new {success= false,message="Error while deleting"});
             }
-            var oldImagePath = Path.Combine(_env.WebRootPath, ProductToBeDeleted.ImageUrl.TrimStart('\\'));
-            if (System.IO.File.Exists(oldImagePath))
+            if (!string.IsNullOrEmpty(ProductToBeDeleted.ImageUrl))
             {
-                System.IO.File.Delete(oldImagePath);
+                var oldImagePath = Path.Combine(_env.WebRootPath, ProductToBeDeleted.ImageUrl.TrimStart('\\'));
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
             }
             _unitOfWork.Product.Remove(ProductToBeDeleted);
             _unitOfWork.Save();
