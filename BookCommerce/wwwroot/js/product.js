@@ -1,11 +1,7 @@
-﻿var dataTable;
+﻿var datatable;
 
 $(document).ready(function () {
-    loadDataTable();
-});
-
-function loadDataTable() {
-    var datatable = $('#tblData').DataTable({
+    datatable = $('#tblData').DataTable({
         "ajax": { 
             url: '/product/getall'       
         },
@@ -27,9 +23,9 @@ function loadDataTable() {
             }
         ]
     });
-}
+});
 
-function Delete (url){
+function Delete(url) {
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -42,12 +38,12 @@ function Delete (url){
         if (result.isConfirmed) {
             $.ajax({
                 url: url,
-                type:'DELETE',
+                type: 'DELETE',
                 success: function (data) {
                     datatable.ajax.reload();
                     toastr.success(data.message);
                 }
-            })
+            });
         }
     });
 }
