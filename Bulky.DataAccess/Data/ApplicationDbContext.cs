@@ -6,15 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Book.DataAccess.Data
 {
-    public class ApplicationDbContext:IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Product { get; set; }
+        public DbSet<ApplicationUsers> ApplicationUsers {get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
