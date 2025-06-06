@@ -1,8 +1,9 @@
 using System.Diagnostics;
 using Book.DataAccess.Repository.IRepository;
 using Book.Models;
-
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Book.Utility;
 
 namespace BookCommerce.Controllers
 {
@@ -23,15 +24,14 @@ namespace BookCommerce.Controllers
 			return View(ProductList);
 		}
 
-
-        public IActionResult Details(int productId)
-        {
-
+		[Authorize(Roles = SD.Role_Admin)]
+		public IActionResult Details(int productId)
+		{
 			Product product = _unitofWork.Product.Get(u => u.Id == productId, includeProperties: "Category");
 			return View(product);
-        }
+		}
 
-        public IActionResult Privacy()
+		public IActionResult Privacy()
 		{
 			return View();
 		}
